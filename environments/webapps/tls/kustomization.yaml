@@ -2,7 +2,40 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - vault-vars.yaml
   - ../../../platform/vault/tls-base
+
+configMapGenerator:
+  - name: vault-vars
+    behavior: merge
+    literals:
+      - VAULT_SECRET_PATH=certs/nginx
+      - VAULT_ROLE=nginx-role
+      - ROLLOUT_TRIGGER=tls-v1
+
+vars:
+  - name: VAULT_SECRET_PATH
+    objref:
+      kind: ConfigMap
+      name: vault-vars
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.VAULT_SECRET_PATH
+
+  - name: VAULT_ROLE
+    objref:
+      kind: ConfigMap
+      name: vault-vars
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.VAULT_ROLE
+
+  - name: ROLLOUT_TRIGGER
+    objref:
+      kind: ConfigMap
+      name: vault-vars
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.ROLLOUT_TRIGGER
+
 patches:
   - path: patch-vault-vars.yaml
