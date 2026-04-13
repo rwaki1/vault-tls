@@ -3,6 +3,9 @@ kind: Kustomization
 
 namespace: webapps
 
+commonAnnotations:
+  kustomize.toolkit.fluxcd.io/substitute: "enabled"
+
 resources:
   - ../../../platform/vault/tls-base
 
