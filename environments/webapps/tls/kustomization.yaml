@@ -6,6 +6,9 @@ namespace: webapps
 commonAnnotations:
   kustomize.toolkit.fluxcd.io/substitute: "enabled"
 
+generatorOptions:
+  disableNameSuffixHash: true
+
 resources:
   - ../../../platform/vault/tls-base
 
