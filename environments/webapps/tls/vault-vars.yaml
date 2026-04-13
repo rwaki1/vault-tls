@@ -1,3 +1,10 @@
-VAULT_SECRET_PATH: "kv/data/tls/webapp-prod"
-VAULT_ROLE: "tls-webapp-role"
-ROLLOUT_TRIGGER: "tls-v1"
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vault-vars
+  namespace: webapps
+data:
+  VAULT_SECRET_PATH: "kv/data/tls/webapp-prod"
+  VAULT_ROLE: "tls-webapp-role"
+  VAULT_SERVICE_ACCOUNT: "vault-tls-sa"
+  ROLLOUT_TRIGGER: "tls-v1"
