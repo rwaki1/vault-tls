@@ -4,3 +4,5 @@ kind: Kustomization
 resources:
   - vault-vars.yaml
   - ../../../platform/vault/tls-base
+patches:
+  - path: patch-vault-vars.yaml
