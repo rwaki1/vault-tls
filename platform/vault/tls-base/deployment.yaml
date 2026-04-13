@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vault-tls-app
+  namespace: webapps
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vault-tls-app
+  template:
+    metadata:
+      labels:
+        app: vault-tls-app
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/role: "REPLACE_ROLE"
+        rollout-trigger: "REPLACE_TRIGGER"
+
+        vault.hashicorp.com/agent-inject-template-tls.crt: |
+          {{- with secret "REPLACE_SECRET_PATH" -}}
+          {{ .Data.data.tls.crt }}
+          {{- end }}
+
+        vault.hashicorp.com/agent-inject-template-tls.key: |
+          {{- with secret "REPLACE_SECRET_PATH" -}}
+          {{ .Data.data.tls.key }}
+          {{- end }}
+
+        vault.hashicorp.com/agent-inject-template-ca.crt: |
+          {{- with secret "REPLACE_SECRET_PATH" -}}
+          {{ .Data.data.ca.crt }}
+          {{- end }}
+
+    spec:
+      serviceAccountName: vault-tls-sa
+      volumes:
+        - name: vault-tls
+          emptyDir: {}
+      containers:
+        - name: app
+          image: nginx
+          volumeMounts:
+            - name: vault-tls
+              mountPath: /etc/tls
+              readOnly: true

@@ -1,0 +1,5 @@
+resources:
+  - ../../../platform/vault/tls-base
+
+patches:
+  - path: patch-vault-vars.yaml

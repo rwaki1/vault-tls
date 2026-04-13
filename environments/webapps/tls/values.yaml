@@ -1,0 +1,3 @@
+VAULT_SECRET_PATH: "kv/data/tls/webapp-prod"
+VAULT_ROLE: "tls-webapp-role"
+ROLLOUT_TRIGGER: "tls-v1"
