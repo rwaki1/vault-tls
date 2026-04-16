@@ -8,15 +8,5 @@ generatorOptions:
 
 resources:
   - ../../../platform/vault/tls-base
-  - vault-vars.yaml
-
-configMapGenerator:
-  - name: vault-vars
-    behavior: merge
-    literals:
-      - VAULT_SECRET_PATH=certs/nginx
-      - VAULT_ROLE=nginx-role
-      - ROLLOUT_TRIGGER=tls-v1
-
-patches:
-  - path: patch-vault-vars.yaml
+  - service.yaml
+  - ingress.yaml

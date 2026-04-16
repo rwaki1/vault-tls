@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vault-tls-app
+  namespace: webapps
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  rules:
+    - host: webapps.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: vault-tls-app
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - webapps.example.com
+      secretName: webapps-tls-secret
