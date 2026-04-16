@@ -10,3 +10,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: gitops-repo
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: vault-vars

@@ -3,14 +3,12 @@ kind: Kustomization
 
 namespace: webapps
 
-commonAnnotations:
-  kustomize.toolkit.fluxcd.io/substitute: "enabled"
-
 generatorOptions:
   disableNameSuffixHash: true
 
 resources:
   - ../../../platform/vault/tls-base
+  - vault-vars.yaml
 
 configMapGenerator:
   - name: vault-vars
@@ -19,31 +17,6 @@ configMapGenerator:
       - VAULT_SECRET_PATH=certs/nginx
       - VAULT_ROLE=nginx-role
       - ROLLOUT_TRIGGER=tls-v1
-
-vars:
-  - name: VAULT_SECRET_PATH
-    objref:
-      kind: ConfigMap
-      name: vault-vars
-      apiVersion: v1
-    fieldref:
-      fieldpath: data.VAULT_SECRET_PATH
-
-  - name: VAULT_ROLE
-    objref:
-      kind: ConfigMap
-      name: vault-vars
-      apiVersion: v1
-    fieldref:
-      fieldpath: data.VAULT_ROLE
-
-  - name: ROLLOUT_TRIGGER
-    objref:
-      kind: ConfigMap
-      name: vault-vars
-      apiVersion: v1
-    fieldref:
-      fieldpath: data.ROLLOUT_TRIGGER
 
 patches:
   - path: patch-vault-vars.yaml
